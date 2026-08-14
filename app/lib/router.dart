@@ -13,6 +13,7 @@ GoRouter buildRouter(WidgetRef ref) {
   final planRepo = ref.watch(planRepoProvider);
   final taskRepo = ref.watch(taskRepoProvider);
   final gamifRepo = ref.watch(gamifRepoProvider);
+  final chatRepo = ref.watch(chatRepoProvider);
   final llmClient = ref.watch(llmClientProvider);
   return GoRouter(
     initialLocation: '/onboarding',
@@ -39,7 +40,14 @@ GoRouter buildRouter(WidgetRef ref) {
             path: '/path',
             builder: (_, __) => PathScreen(planRepo: planRepo, taskRepo: taskRepo),
           ),
-          GoRoute(path: '/coach', builder: (_, __) => const CoachScreen()),
+          GoRoute(
+            path: '/coach',
+            builder: (_, __) => CoachScreen(
+              llmClient: llmClient,
+              chatRepo: chatRepo,
+              planRepo: planRepo,
+            ),
+          ),
           GoRoute(path: '/profile', builder: (_, __) => ProfileScreen(gamifRepo: gamifRepo)),
         ],
       ),
