@@ -1,0 +1,9 @@
+name = "gym-coach-proxy"
+main = "src/index.ts"
+compatibility_date = "2024-08-01"
+
+[vars]
+HMAC_SECRET = "dev-secret-change-me"
+MONTHLY_BUDGET_YUAN = "100"
+
+# 真部署时通过 wrangler secret put QWEN_API_KEY 设置
