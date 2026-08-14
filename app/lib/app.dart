@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:gym_coach/theme/colors.dart';
+import 'router.dart';
 
 class GymCoachApp extends StatelessWidget {
   const GymCoachApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: '健身猫头鹰',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF58CC02)),
+        colorScheme: ColorScheme.fromSeed(seedColor: AppColors.duoGreen),
         useMaterial3: true,
       ),
-      home: const Scaffold(
-        body: Center(child: Text('Gym Coach MVP')),
-      ),
+      routerConfig: buildRouter(),
     );
   }
 }
