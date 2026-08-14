@@ -40,7 +40,7 @@ GoRouter buildRouter(WidgetRef ref) {
             builder: (_, __) => PathScreen(planRepo: planRepo, taskRepo: taskRepo),
           ),
           GoRoute(path: '/coach', builder: (_, __) => const CoachScreen()),
-          GoRoute(path: '/profile', builder: (_, __) => const ProfileScreen()),
+          GoRoute(path: '/profile', builder: (_, __) => ProfileScreen(gamifRepo: gamifRepo)),
         ],
       ),
     ],
