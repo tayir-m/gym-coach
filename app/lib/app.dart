@@ -32,6 +32,11 @@ final llmClientProvider = Provider<LlmClient>((ref) {
   return client;
 });
 
+/// Cache the GoRouter so it isn't reconstructed on every build. A fresh
+/// GoRouter on each rebuild resets nav state and throws the user back to
+/// /onboarding whenever a dependent provider invalidates.
+final routerProvider = Provider((ref) => buildRouter(ref));
+
 class GymCoachApp extends ConsumerWidget {
   const GymCoachApp({super.key});
 
@@ -43,7 +48,7 @@ class GymCoachApp extends ConsumerWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: AppColors.duoGreen),
         useMaterial3: true,
       ),
-      routerConfig: buildRouter(ref),
+      routerConfig: ref.watch(routerProvider),
     );
   }
 }
