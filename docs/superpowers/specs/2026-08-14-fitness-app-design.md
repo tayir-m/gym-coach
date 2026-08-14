@@ -6,7 +6,7 @@
 
 ## 一句话定位
 
-一款 Duolingo 式游戏化的健身 & 饮食计划 app，通过国内大模型（Qwen/豆包）以对话方式收集用户信息并生成个性化多周计划，本地优先存储，断点续做不丢记忆。
+一款 Duolingo 式游戏化的健身 & 饮食计划 app，通过国内大模型（Qwen-Plus，千问）以对话方式收集用户信息并生成个性化多周计划，本地优先存储，断点续做不丢记忆。
 
 ## 目标用户 & 场景
 
@@ -68,8 +68,8 @@
                           │ HTTPS（SSE 流式）
                           ▼
 ┌─────────────────────────────────────────────────────────┐
-│  Serverless Proxy（阿里云函数计算 FC，免费额度内）       │
-│   · 持有 LLM API Key（Qwen / 豆包）                    │
+│  Serverless Proxy（Cloudflare Workers，无需备案）         │
+│   · 持有 LLM API Key（Qwen-Plus，千问）                  │
 │   · POST /v1/chat → 流式 SSE 转给 app                   │
 │   · 共享 secret 签名校验                                 │
 │   · 粗粒度限流 + 月预算熔断                              │
@@ -246,11 +246,14 @@ LLM 在收集中途输出普通文本；app 检测到输出形如 `{...}` 的纯
 
 #### 部署
 
-**阿里云函数计算 FC**（推荐）：
+**MVP 阶段：Cloudflare Workers**（无需备案）
 
-- 每月 100 万次免费调用
-- 国内访问稳定，Qwen/豆包 API 同生态
-- 需要备案域名（一次性）
+- `*.workers.dev` 子域名直接可用，零备案
+- 免费额度：每天 10 万次请求
+- 全球 CDN，TypeScript 一键部署
+- 后期可平滑迁移到阿里云 FC（仅需修改 endpoint URL）
+
+**迁移路径**：当国内访问速度成为瓶颈或需要备案域名时，将 Worker 代码原样部署到阿里云函数计算 FC，配置自定义备案域名，在 `app/lib/config.dart` 中替换 endpoint URL 即可，app 代码无任何改动。
 
 #### 端点
 
@@ -276,16 +279,17 @@ Proxy 不接收也不存储任何用户数据，仅作为转发层。
 proxy/
 ├── src/
 │   ├── index.ts          # 入口
-│   ├── llm-client.ts     # Qwen/Doubao 适配
+│   ├── llm-client.ts     # Qwen-Plus 适配
 │   ├── auth.ts           # HMAC 签名校验
 │   └── rate-limit.ts     # 粗粒度限流
 ├── package.json
-└── deploy.md             # 阿里云 FC 部署步骤
+└── deploy.md             # Cloudflare Workers 部署 + 阿里云迁移指南
 ```
 
 - TypeScript + Hono 框架
 - 单文件即可上线
-- 部署后拿到 HTTPS endpoint，写入 Flutter app 的 `lib/config.dart`
+- 部署到 Cloudflare Workers：`wrangler deploy` 一条命令
+- 拿到 HTTPS endpoint（如 `https://gym-coach.<your-sub>.workers.dev`），写入 Flutter app 的 `lib/config.dart`
 
 #### 安全
 
@@ -303,7 +307,7 @@ proxy/
 - 单次日常 chat：~¥0.024
 - 单次计划生成：~¥0.012
 - 用户首月总成本：¥0.5 以内
-- 100 用户首月 ≈ ¥50，远在阿里云免费额度内
+- 100 用户首月 ≈ ¥50，远在 Cloudflare Workers 免费额度（10 万次/天）内
 
 #### Flutter 端 LLM Client
 
@@ -445,7 +449,7 @@ MVP 完工定义：
 3. 今日屏能勾选 workout + 4 餐，每勾一项 XP + 动效
 4. 漏打卡 1 天 streak 不变（消耗 freeze）；漏 2 天 streak 重置并弹「欢迎回来」
 5. 跟教练聊天能调整计划（动作换 / 餐量加减），新一天内容随之更新
-6. Proxy 部署阿里云 FC，app 稳定流式收到回复
+6. Proxy 部署 Cloudflare Workers，app 稳定流式收到回复
 7. 关掉 app 7 天再打开，本地数据完整恢复
 8. APK 能装到 Android 真机跑通
 
@@ -459,17 +463,24 @@ MVP 完工定义：
 | M4 Path + Profile | 路径图 + 徽章墙 | 1-2 天 |
 | M5 Coach 聊天 | 计划后聊天 + 调整计划 | 1-2 天 |
 | M6 Streak + 提醒 | streak freeze + 本地通知 | 1 天 |
-| M7 Proxy 上线 | 阿里云 FC 部署 + 联调 | 1 天 |
+| M7 Proxy 上线 | Cloudflare Workers 部署 + 联调 | 1 天 |
 | M8 APK 真机 | Android 真机回归 | 1-2 天 |
 
 合计 **~10-15 天**（不含 iOS 构建）。
 
-## 开放问题（M1 阶段需解决）
+## 已决策事项（M1 启动前确认）
 
-- LLM 具体选 Qwen-Plus 还是 豆包 Pro？建议先 Qwen-Plus（中文 + 工具调用友好），如发现质量问题再切豆包
-- 阿里云 FC 备案域名是否已有？没有的话需要先申请（备案通常 7-20 天）
-- 体重趋势数据：app 启动时让用户输入当前体重，之后手动更新（不接入秤）
-- 漏打卡超过 30 天的极端情况：streak 重置，LLM 重新评估是否需要降阶重启
+- **LLM**：Qwen-Plus（千问），由 Cloudflare Workers 代理调用
+- **Proxy 部署**：Cloudflare Workers MVP（无需备案），保留迁移到阿里云 FC 的路径
+- **体重数据**：手动输入，启动时填一次，之后手动更新（不接入硬件）
+- **漏打卡 >30 天**：streak 重置 + LLM 重新评估是否需要降阶重启
+
+## M1 启动前剩余事项
+
+- 申请 Qwen API Key（阿里云百炼平台）
+- 注册 Cloudflare 账号并开通 Workers
+- 在 `proxy/src/config.ts` 中填入 API Key 与 HMAC secret
+- 准备吉祥物「教练猫头鹰」SVG/Lottie 资源（可先用占位符）
 
 ## 后续路线（M1 之后）
 
