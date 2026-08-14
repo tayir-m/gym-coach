@@ -52,7 +52,7 @@ StreakUpdate evaluateStreakOnActive({
   // Missed >= 2 days
   final freezesToUse = daysSince - 1;
   if (freezesRemaining >= freezesToUse) {
-    final newCurrent = currentStreakDays + daysSince;
+    final newCurrent = currentStreakDays + 1;
     final newLongest = newCurrent > longestStreakDays ? newCurrent : longestStreakDays;
     return StreakUpdate(
       newCurrentDays: newCurrent,
