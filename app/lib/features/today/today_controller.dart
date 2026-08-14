@@ -26,10 +26,14 @@ class TodayController {
     if (task.dbId == null) {
       throw StateError('DayTask 必须从数据库读取后才能调用 completeWorkout');
     }
+    if (task.completedWorkout) {
+      throw StateError('Workout already completed');
+    }
     final allMealsDone = task.meals.isNotEmpty &&
         task.meals.every((m) => task.completedMeals[m.slot] == true);
     final award = computeXpForWorkoutCompletion(allMealsCompleted: allMealsDone);
     await taskRepo.markWorkoutDone(task.dbId!);
+    await taskRepo.awardXp(task.dbId!, award.xp);
     await gamifRepo.recordEvent('WORKOUT_DONE', award.xp);
     return award.xp;
   }
@@ -38,14 +42,16 @@ class TodayController {
     if (task.dbId == null) {
       throw StateError('DayTask 必须从数据库读取后才能调用 completeMeal');
     }
-    final mealsCompleted = task.completedMeals[slot] == true
-        ? task.meals.length
-        : task.meals.where((m) => task.completedMeals[m.slot] == true || m.slot == slot).length;
+    if (task.completedMeals[slot] == true) {
+      throw StateError('Meal slot $slot already completed');
+    }
+    final mealsCompleted = task.meals.where((m) => task.completedMeals[m.slot] == true || m.slot == slot).length;
     final award = computeXpForMealCompletion(
       mealsCompletedBefore: mealsCompleted - 1,
       totalMeals: task.meals.length,
     );
     await taskRepo.markMealDone(task.dbId!, slot, true);
+    await taskRepo.awardXp(task.dbId!, award.xp);
     await gamifRepo.recordEvent('MEAL_DONE', award.xp);
     return award.xp;
   }
