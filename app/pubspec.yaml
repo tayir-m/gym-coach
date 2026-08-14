@@ -1,0 +1,16 @@
+name: gym_coach
+description: 健身猫头鹰 - Duolingo 式健身 & 饮食计划 app
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: '>=3.16.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
