@@ -1,20 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'app.dart';
+import 'features/onboarding/onboarding_controller.dart';
 import 'features/onboarding/onboarding_screen.dart';
 import 'features/today/today_screen.dart';
 import 'features/path/path_screen.dart';
 import 'features/coach/coach_screen.dart';
 import 'features/profile/profile_screen.dart';
 
-GoRouter buildRouter() {
+GoRouter buildRouter(WidgetRef ref) {
+  final planRepo = ref.watch(planRepoProvider);
+  final taskRepo = ref.watch(taskRepoProvider);
+  final gamifRepo = ref.watch(gamifRepoProvider);
+  final llmClient = ref.watch(llmClientProvider);
   return GoRouter(
     initialLocation: '/onboarding',
     routes: [
-      GoRoute(path: '/onboarding', builder: (_, __) => const OnboardingScreen()),
+      GoRoute(
+        path: '/onboarding',
+        builder: (_, __) => OnboardingScreen(
+          controller: OnboardingController(llmClient: llmClient),
+          planRepository: planRepo,
+        ),
+      ),
       ShellRoute(
         builder: (context, state, child) => _TabScaffold(child: child),
         routes: [
-          GoRoute(path: '/today', builder: (_, __) => const TodayScreen()),
+          GoRoute(
+            path: '/today',
+            builder: (_, __) => TodayScreen(
+              planRepo: planRepo,
+              taskRepo: taskRepo,
+              gamifRepo: gamifRepo,
+            ),
+          ),
           GoRoute(path: '/path', builder: (_, __) => const PathScreen()),
           GoRoute(path: '/coach', builder: (_, __) => const CoachScreen()),
           GoRoute(path: '/profile', builder: (_, __) => const ProfileScreen()),
