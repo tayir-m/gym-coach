@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Used until Compose takes over via AppTheme. -->
+    <style name="Theme.GymCoach" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/duoGreen</item>
+        <item name="android:windowBackground">@color/duoBackground</item>
+    </style>
+</resources>

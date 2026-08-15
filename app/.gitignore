@@ -1,33 +1,18 @@
-# Flutter / Dart
-.dart_tool/
-.flutter-plugins
-.flutter-plugins-dependencies
-.packages
-.pub-cache/
-.pub/
-build/
-pubspec.lock
+# Android-specific build/cache artifacts.
 
-# IDE
+# Gradle
+.gradle/
+build/
+local.properties
+
+# Captures from aapt/jacoco/coverage tooling
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Intellij / Studio
 .idea/
-.vscode/
 *.iml
 
-# OS
+# OS noise
 .DS_Store
-
-# Coverage
-coverage/
-
-# Android
-android/.gradle/
-android/local.properties
-android/key.properties
-android/app/release/
-android/app/debug/
-
-# iOS
-ios/Pods/
-ios/.symlinks/
-ios/Flutter/Flutter.framework
-ios/Flutter/Flutter.podspec

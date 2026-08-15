@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">健身猫头鹰</string>
+    <string name="tab_today">今日</string>
+    <string name="tab_path">路径</string>
+    <string name="tab_coach">教练</string>
+    <string name="tab_profile">我</string>
+    <string name="title_onboarding">与教练聊聊</string>
+    <string name="title_today">今日任务</string>
+    <string name="title_path">我的路径</string>
+    <string name="title_coach">教练</string>
+    <string name="title_profile">我</string>
+    <string name="notif_channel_daily_name">每日提醒</string>
+    <string name="notif_channel_daily_desc">每天提醒打卡</string>
+    <string name="notif_daily_title">🦉 教练猫头鹰提醒你</string>
+    <string name="notif_daily_body">今天还没打卡，训练 + 饮食任务在等你</string>
+</resources>

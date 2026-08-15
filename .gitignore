@@ -1,0 +1,15 @@
+# Native Android (Kotlin/Compose) rewrite lives under app/android/.
+# This file is the repo-root ignore; see app/.gitignore for app-specific paths.
+
+# Claude Code local state (memory, session artifacts)
+.claude/
+
+# Build artifacts produced by sibling jobs (e.g. the prior Flutter CI uploads)
+artifacts/
+
+# OS / editor noise
+.DS_Store
+.idea/
+.vscode/
+*.iml
+*.swp
