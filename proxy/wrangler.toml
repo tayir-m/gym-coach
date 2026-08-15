@@ -1,14 +1,17 @@
 name = "gym-coach-proxy"
 main = "src/index.ts"
 compatibility_date = "2024-08-01"
-# account_id 由 wrangler deploy 时通过 CLI/CLOUDFLARE_ACCOUNT_ID 注入，请填入下方后部署
 account_id = "dec6a3f12e110840a71fc2965b3ff770"
+
+routes = [
+  { pattern = "gym.qisqaisim.xyz/*", zone_id = "6af24f1d3cd00d4b1e08bd3848a2df80" }
+]
 
 [vars]
 MONTHLY_BUDGET_YUAN = "100"
 QWEN_BASE_URL = "https://ws-hyv4e8q37h84jxcr.cn-beijing.maas.aliyuncs.com/compatible-mode/v1"
 QWEN_MODEL = "qwen-plus"
 
-# 真部署时通过 `wrangler secret put <NAME>` 设置（不入 git）：
+# Secrets 通过 wrangler secret put 设置（不入 git）：
 #   - QWEN_API_KEY
 #   - HMAC_SECRET
