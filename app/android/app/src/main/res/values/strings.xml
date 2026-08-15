@@ -14,4 +14,7 @@
     <string name="notif_channel_daily_desc">每天提醒打卡</string>
     <string name="notif_daily_title">🦉 教练猫头鹰提醒你</string>
     <string name="notif_daily_body">今天还没打卡，训练 + 饮食任务在等你</string>
+    <string name="notif_hot_reload_channel">热更新</string>
+    <string name="notif_hot_reload_title">开发模式</string>
+    <string name="notif_hot_reload_text">监听代码变更中…</string>
 </resources>

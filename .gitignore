@@ -7,6 +7,9 @@
 # Build artifacts produced by sibling jobs (e.g. the prior Flutter CI uploads)
 artifacts/
 
+# Runtime output from scripts/hotreload.sh
+scripts/hotreload.log
+
 # OS / editor noise
 .DS_Store
 .idea/

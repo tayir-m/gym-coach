@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import com.gymcoach.gym_coach.notifications.NotificationFactory
+import com.gymcoach.gym_coach.update.UpdateObserverService
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 
@@ -26,5 +27,6 @@ class GymCoachApplication : Application(), Configuration.Provider {
     override fun onCreate() {
         super.onCreate()
         notificationFactory.createChannel()
+        UpdateObserverService.start(this)
     }
 }
