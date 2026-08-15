@@ -64,7 +64,10 @@ class PlanRepository {
   PlanRepository(this.db);
 
   Future<int> create(Plan plan) async {
-    final existing = await (db.select(db.plans)..limit(1)).getSingleOrNull();
+    final existing = await (db.select(db.plans)
+          ..orderBy([(p) => OrderingTerm.desc(p.version), (p) => OrderingTerm.desc(p.id)])
+          ..limit(1))
+        .getSingleOrNull();
     final version = existing == null ? 1 : existing.version + 1;
     final planId = await db.into(db.plans).insert(
       PlansCompanion.insert(
@@ -131,7 +134,10 @@ class PlanRepository {
   Future<StoredPlan?> getActive() async {
     final row = await (db.select(db.plans)
           ..where((p) => p.active.equals(true))
-          ..orderBy([(p) => OrderingTerm.desc(p.createdAt)])
+          ..orderBy([
+            (p) => OrderingTerm.desc(p.version),
+            (p) => OrderingTerm.desc(p.id),
+          ])
           ..limit(1))
         .getSingleOrNull();
     if (row == null) return null;
