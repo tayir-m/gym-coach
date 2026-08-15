@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gym_coach/data/llm/llm_client.dart';
 import 'package:http/http.dart' as http;
@@ -13,6 +15,7 @@ void main() {
         'data: {"delta":"好"}\n\ndata: [DONE]\n\n',
         200,
         headers: {'content-type': 'text/event-stream'},
+        encoding: utf8,
       );
     });
 

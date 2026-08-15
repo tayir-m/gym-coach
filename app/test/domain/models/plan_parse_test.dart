@@ -42,8 +42,9 @@ void main() {
       ],
       'startDate': '2026-08-14T00:00:00.000Z',
     };
-    final plan = Plan.fromJson({...json, 'startDate': DateTime.utc(2026, 8, 14)});
+    final plan = Plan.fromJson(json);
     expect(plan.weeks, 12);
+    expect(plan.startDate, isA<DateTime>());
     expect(plan.trainingDays.first.exercises.first.name, '哑铃卧推');
     expect(plan.dailyMeals.first.meals.first.slot, 'breakfast');
   });
