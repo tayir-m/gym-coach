@@ -1,5 +1,3 @@
-import 'dart:async';
-import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gym_coach/data/llm/llm_client.dart';
 import 'package:http/http.dart' as http;
@@ -11,8 +9,8 @@ void main() {
       expect(req.headers['X-Signature'], isNotEmpty);
       expect(req.headers['X-Timestamp'], isNotEmpty);
       expect(req.body, contains('"messages"'));
-      return http.StreamedResponse(
-        Stream.value(utf8.encode('data: {"delta":"好"}\n\ndata: [DONE]\n\n')),
+      return http.Response(
+        'data: {"delta":"好"}\n\ndata: [DONE]\n\n',
         200,
         headers: {'content-type': 'text/event-stream'},
       );
@@ -36,13 +34,10 @@ void main() {
     final mock = MockClient((req) async {
       attempts++;
       if (attempts < 2) {
-        return http.StreamedResponse(
-          Stream.value(utf8.encode('boom')),
-          500,
-        );
+        return http.Response('boom', 500);
       }
-      return http.StreamedResponse(
-        Stream.value(utf8.encode('data: {"delta":"ok"}\n\ndata: [DONE]\n\n')),
+      return http.Response(
+        'data: {"delta":"ok"}\n\ndata: [DONE]\n\n',
         200,
         headers: {'content-type': 'text/event-stream'},
       );

@@ -1,4 +1,4 @@
-const _badgeConditions = <String, bool Function(Map<String, dynamic>)>{
+final _badgeConditions = <String, bool Function(Map<String, dynamic>)>{
   'FIRST_WORKOUT': (s) => (s['totalWorkoutsCompleted'] as int) >= 1,
   'ONE_WEEK_STREAK': (s) => (s['longestStreak'] as int) >= 7,
   'HUNDRED_DAYS': (s) => (s['longestStreak'] as int) >= 100,

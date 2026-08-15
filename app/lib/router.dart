@@ -9,7 +9,7 @@ import 'features/path/path_screen.dart';
 import 'features/coach/coach_screen.dart';
 import 'features/profile/profile_screen.dart';
 
-GoRouter buildRouter(WidgetRef ref) {
+GoRouter buildRouter(Ref ref) {
   final planRepo = ref.watch(planRepoProvider);
   final taskRepo = ref.watch(taskRepoProvider);
   final gamifRepo = ref.watch(gamifRepoProvider);

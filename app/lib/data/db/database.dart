@@ -36,6 +36,6 @@ QueryExecutor _openConnection() {
   return LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory();
     final file = File(p.join(dbFolder.path, 'gym_coach.sqlite'));
-    return driftDatabase(name: 'gym_coach', native: const DriftNativeOptions(databasePath: () async => file.path));
+    return driftDatabase(name: 'gym_coach', native: DriftNativeOptions(databasePath: () async => file.path));
   });
 }

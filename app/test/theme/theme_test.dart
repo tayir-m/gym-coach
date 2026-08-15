@@ -20,7 +20,7 @@ void main() {
   });
 
   test('AppColors.duoGreen matches spec', () {
-    expect(AppColors.duoGreen.toARGB32(), 0xFF58CC02);
+    expect(AppColors.duoGreen.value, 0xFF58CC02);
   });
 
   testWidgets('AppMascot renders emoji', (tester) async {
