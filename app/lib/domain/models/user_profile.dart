@@ -8,7 +8,7 @@ enum Experience { beginner, intermediate, advanced }
 enum Sex { male, female, other }
 
 @freezed
-class UserProfile with _$UserProfile {
+abstract class UserProfile with _$UserProfile {
   const factory UserProfile({
     required int age,
     @JsonKey(name: 'height_cm') required double heightCm,

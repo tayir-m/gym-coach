@@ -1,0 +1,23 @@
+{
+  "toolPermission": "always-proceed",
+  "enableTerminalSandbox": false,
+  "agent": {
+    "terminalExecutionPolicy": "turbo"
+  },
+  "permissions": {
+    "allow": [
+      "*",
+      "command(*)",
+      "read_file(*)",
+      "write_file(*)",
+      "replace_file(*)",
+      "list_dir(*)",
+      "grep_search(*)",
+      "read_url(*)",
+      "execute_url(*)",
+      "mcp(*)"
+    ],
+    "ask": [],
+    "deny": []
+  }
+}

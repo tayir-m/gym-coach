@@ -6,7 +6,7 @@ part 'chat_message.g.dart';
 enum ChatRole { system, user, assistant }
 
 @freezed
-class ChatMessage with _$ChatMessage {
+abstract class ChatMessage with _$ChatMessage {
   const factory ChatMessage({
     required int planId,
     required ChatRole role,

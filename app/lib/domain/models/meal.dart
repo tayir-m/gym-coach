@@ -4,7 +4,7 @@ part 'meal.freezed.dart';
 part 'meal.g.dart';
 
 @freezed
-class Meal with _$Meal {
+abstract class Meal with _$Meal {
   const factory Meal({
     required String slot,        // breakfast/lunch/dinner/snack
     required String name,

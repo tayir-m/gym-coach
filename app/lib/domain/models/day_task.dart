@@ -5,7 +5,7 @@ import 'meal.dart';
 part 'day_task.freezed.dart';
 
 @freezed
-class Workout with _$Workout {
+abstract class Workout with _$Workout {
   const factory Workout({
     required String title,
     required int estimatedMinutes,
@@ -14,7 +14,7 @@ class Workout with _$Workout {
 }
 
 @freezed
-class DayTask with _$DayTask {
+abstract class DayTask with _$DayTask {
   const factory DayTask({
     int? dbId,                          // 仅从 DB 读出时填，用于 markWorkoutDone/markMealDone
     required int planId,

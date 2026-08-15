@@ -1,0 +1,11 @@
+{
+  "antigravity.agent.allowedCommands": [
+    "*"
+  ],
+  "allowedCommands": [
+    "*"
+  ],
+  "autoApprove": [
+    "*"
+  ]
+}

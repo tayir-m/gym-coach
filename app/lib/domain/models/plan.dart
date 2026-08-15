@@ -6,7 +6,7 @@ part 'plan.freezed.dart';
 part 'plan.g.dart';
 
 @freezed
-class TrainingDay with _$TrainingDay {
+abstract class TrainingDay with _$TrainingDay {
   const factory TrainingDay({
     required int week,
     @JsonKey(name: 'day_of_week') required int dayOfWeek,
@@ -21,7 +21,7 @@ class TrainingDay with _$TrainingDay {
 }
 
 @freezed
-class DailyMeals with _$DailyMeals {
+abstract class DailyMeals with _$DailyMeals {
   const factory DailyMeals({
     required int week,
     @JsonKey(name: 'day_of_week') required int dayOfWeek,
@@ -37,7 +37,7 @@ class DailyMeals with _$DailyMeals {
 }
 
 @freezed
-class Plan with _$Plan {
+abstract class Plan with _$Plan {
   const factory Plan({
     required int weeks,
     @JsonKey(name: 'weekly_structure') required String weeklyStructure,
