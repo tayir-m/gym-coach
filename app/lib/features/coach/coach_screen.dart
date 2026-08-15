@@ -4,7 +4,6 @@ import 'package:gym_coach/data/repositories/chat_repository.dart';
 import 'package:gym_coach/data/repositories/plan_repository.dart';
 import 'package:gym_coach/domain/models/chat_message.dart';
 import 'package:gym_coach/theme/colors.dart';
-import 'package:gym_coach/theme/mascot.dart';
 
 class CoachScreen extends StatefulWidget {
   final LlmClient llmClient;

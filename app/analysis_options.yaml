@@ -1,0 +1,11 @@
+analyzer:
+  errors:
+    # Freezed factory parameters carry @JsonKey(name: ...) but the analyzer
+    # does not recognize factory parameters as valid annotation targets even
+    # though json_serializable's generator does. Suppress project-wide; the
+    # generated *.g.dart files are what actually drive (de)serialization.
+    invalid_annotation_target: ignore
+
+linter:
+  rules:
+    avoid_print: true

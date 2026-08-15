@@ -23,7 +23,7 @@ void main() {
       dailyMeals: const [],
       startDate: DateTime(2026, 8, 14),
     );
-    final id1 = await repo.create(plan);
+    await repo.create(plan);
     final id2 = await repo.create(plan);
     final active = await repo.getActive();
     expect(active, isNotNull);
