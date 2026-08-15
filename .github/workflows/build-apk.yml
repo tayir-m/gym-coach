@@ -1,0 +1,73 @@
+name: Build APK
+
+on:
+  push:
+    branches: [feat/mvp-implementation, main]
+    paths:
+      - 'app/**'
+      - '.github/workflows/build-apk.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'app/**'
+      - '.github/workflows/build-apk.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: app
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.0'
+          channel: 'stable'
+          cache: true
+
+      - name: Show toolchain versions
+        run: |
+          flutter --version
+          dart --version
+
+      - name: Pub get
+        run: flutter pub get
+
+      - name: Generate Drift + freezed code
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Analyze
+        run: flutter analyze --no-fatal-infos
+
+      - name: Run tests
+        run: flutter test
+
+      - name: Build release APK
+        env:
+          PROXY_ENDPOINT: ${{ vars.PROXY_ENDPOINT || 'https://gym.qisqaisim.xyz' }}
+          HMAC_SECRET: ${{ vars.HMAC_SECRET || 'dev-secret-change-me' }}
+        run: |
+          flutter build apk --release \
+            --dart-define=PROXY_ENDPOINT=$PROXY_ENDPOINT \
+            --dart-define=HMAC_SECRET=$HMAC_SECRET
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release
+          path: app/build/app/outputs/flutter-apk/app-release.apk
+          if-no-files-found: error
+          retention-days: 14

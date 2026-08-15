@@ -6,7 +6,30 @@ and verify it on a real Android device.
 > **This has not been executed yet.** The dev environment used to author Tasks
 > 1–18 (Termux on Android ARM64) has no Flutter SDK, no Android SDK, no JDK and
 > no target device. Everything below is the exact procedure to run on a proper
-> dev box.
+> dev box. If you don't have a dev box handy, use the GitHub Actions workflow
+> at `.github/workflows/build-apk.yml` — see the CI section at the bottom.
+
+## CI — GitHub Actions (recommended when no dev box)
+
+`.github/workflows/build-apk.yml` runs `flutter pub get` → `build_runner` →
+`flutter analyze` → `flutter test` → `flutter build apk --release` on every
+push to `feat/mvp-implementation` / `main`, and uploads the APK as a
+downloadable artifact. Override defaults via repo **Settings → Secrets and
+variables → Actions → Variables**:
+
+| Variable | Default | Purpose |
+|---|---|---|
+| `PROXY_ENDPOINT` | `https://gym.qisqaisim.xyz` | Cloudflare Workers proxy URL |
+| `HMAC_SECRET` | `dev-secret-change-me` | Shared secret for HMAC sig |
+
+Trigger manually from the Actions tab via **Run workflow**, or wait for the
+next push. The APK is at
+`app-release` artifact → `app-release.apk`.
+
+> **Note from CN network**: GitHub is unreachable from Termux in this
+> project. Push from a network that can reach `github.com`, or mirror to
+> `gitee.com/<user>/<repo>` and adapt the workflow — Gitee Go uses the same
+> YAML but `ubuntu-latest` is `ubuntu:22.04` and the action set differs.
 
 ## Prerequisites
 
